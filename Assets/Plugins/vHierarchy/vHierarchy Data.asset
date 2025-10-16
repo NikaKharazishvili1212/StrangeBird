@@ -1,0 +1,237 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a9752b0c8e144801967e6897679604b, type: 3}
+  m_Name: vHierarchy Data
+  m_EditorClassIdentifier: 
+  sceneDatasByGuid:
+    keys:
+    - 9fc0d4010bbf28b4594072e72b8655ab
+    - 
+    - 497612495a20adf48ac0c122e015b557
+    - 8c9cfa26abfee488c85f1582747f6a02
+    - ffc0d4010bbf28b4594072e72b8655ab
+    values:
+    - goDatasByGlobalId:
+        keys:
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1905164607873832572-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-6074033586571575626-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-705507993-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-788386019-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-595893556-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-3849966-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-3635470-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-224366681-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-5890949435156273507-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-929500044-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1814056118-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-6464784177924965407-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-874454720-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1355837878-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1020184065-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-8059817432720578242-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-751356072-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1673048400-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1116806177-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-125090615-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-951706414-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-2115065301-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1797360642-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-2057024331-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1773048647-0
+        - GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1983189316-0
+        values:
+        - iColor: 2
+          icon: AvatarMask On Icon
+        - iColor: 0
+          icon: Camera Icon
+        - iColor: 0
+          icon: DirectionalLight Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Settings Icon
+        - iColor: 0
+          icon: Terrain Icon
+        - iColor: 0
+          icon: 
+        - iColor: 0
+          icon: 
+        - iColor: 0
+          icon: 
+        - iColor: 0
+          icon: 
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Settings Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 8
+          icon: AvatarMask On Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: PreMatCube
+        - iColor: 0
+          icon: 
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Camera Icon
+      goDatasByInstanceId:
+        keys: 
+        values: []
+    - goDatasByGlobalId:
+        keys: []
+        values: []
+      goDatasByInstanceId:
+        keys: 
+        values: []
+    - goDatasByGlobalId:
+        keys:
+        - GlobalObjectId_V1-2-497612495a20adf48ac0c122e015b557-585645082-0
+        - GlobalObjectId_V1-2-497612495a20adf48ac0c122e015b557-450952238-0
+        - GlobalObjectId_V1-2-497612495a20adf48ac0c122e015b557-1966748063-0
+        - GlobalObjectId_V1-2-497612495a20adf48ac0c122e015b557-542417043-0
+        values:
+        - iColor: 0
+          icon: Settings Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Camera Icon
+        - iColor: 0
+          icon: Canvas Icon
+      goDatasByInstanceId:
+        keys: 36810000e4800000a08200001c810000d69a0000849a0000409c0000bc9a0000d6b6000084b6000040b80000bcb6000010eb0000beea00007cec0000f6ea0000
+        values:
+        - iColor: 0
+          icon: Settings Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Camera Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Settings Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Camera Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Settings Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Camera Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Settings Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Camera Icon
+        - iColor: 0
+          icon: Canvas Icon
+    - goDatasByGlobalId:
+        keys:
+        - GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-519420028-0
+        - GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-1473109886-0
+        - GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-1617216949-0
+        - GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-185906920-0
+        - GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-1208892995-0
+        - GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-7941426752726780028-0
+        - GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-1863591227-0
+        values:
+        - iColor: 0
+          icon: Camera Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: Settings Icon
+        - iColor: 0
+          icon: AvatarMask On Icon
+        - iColor: 0
+          icon: BoxCollider Icon
+      goDatasByInstanceId:
+        keys: d89300007e950000a69500006c93000026950000689600000e96000012e40000b8e50000e0e50000a6e3000060e50000a2e6000048e60000cefb000076fd00009efd000062fb00001cfd000060fe000006fe0000
+        values:
+        - iColor: 0
+          icon: Camera Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: Settings Icon
+        - iColor: 0
+          icon: AvatarMask On Icon
+        - iColor: 0
+          icon: BoxCollider Icon
+        - iColor: 0
+          icon: Camera Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: Settings Icon
+        - iColor: 0
+          icon: AvatarMask On Icon
+        - iColor: 0
+          icon: BoxCollider Icon
+        - iColor: 0
+          icon: Camera Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: Canvas Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: Settings Icon
+        - iColor: 0
+          icon: AvatarMask On Icon
+        - iColor: 0
+          icon: BoxCollider Icon
+    - goDatasByGlobalId:
+        keys: []
+        values: []
+      goDatasByInstanceId:
+        keys: 
+        values: []
