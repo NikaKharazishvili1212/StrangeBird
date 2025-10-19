@@ -9,7 +9,7 @@ using static Utils;
 public sealed partial class MenuManager : MonoBehaviour
 {
     [Tab("Main Menu")]
-    [SerializeField] GameObject menu, loadingMenu, shopMenu, optionMenu, aboutText, back;
+    [SerializeField] GameObject menu, loadingMenu, shopMenu, optionMenu, aboutText;
     [SerializeField] Image loadingBar, background;
     [SerializeField] TextMeshProUGUI loadingText;
     [SerializeField] AudioSource audioSource;
@@ -23,7 +23,7 @@ public sealed partial class MenuManager : MonoBehaviour
         {
             case MenuType.Play: Play(); break;
             case MenuType.Shop: ShowSubMenu(shopMenu); break;
-            case MenuType.Options: ShowSubMenu(optionMenu); break;
+            case MenuType.Options: ShowSubMenu(optionMenu); UpdateDifficultyTextColors(); break;
             case MenuType.About: ShowSubMenu(aboutText); break;
             case MenuType.Quit: QuitApplication(); break;
             case MenuType.Back: ResetMainMenu(); break;
@@ -35,7 +35,6 @@ public sealed partial class MenuManager : MonoBehaviour
         SaveStats();
         foreach (Transform child in menu.transform) child.gameObject.SetActive(false);
         loadingMenu.SetActive(true);
-        back.SetActive(false);
         StartCoroutine(LoadSceneAsync("Game", loadingBar, loadingText));
     }
 
@@ -44,13 +43,11 @@ public sealed partial class MenuManager : MonoBehaviour
         background.color = new Color(0.2f, 0.2f, 0.2f);
         menu.SetActive(false);
         submenu.SetActive(true);
-        back.SetActive(true);
     }
 
     void ResetMainMenu()
     {
         background.color = Color.white;
-        back.SetActive(false);
         menu.SetActive(true);
         shopMenu.SetActive(false);
         shopCosmetics.SetActive(false);

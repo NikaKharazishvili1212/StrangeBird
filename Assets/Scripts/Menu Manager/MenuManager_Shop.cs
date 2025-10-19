@@ -15,7 +15,9 @@ public sealed partial class MenuManager : MonoBehaviour
     [SerializeField] Image cosmeticPreviewImage;
     [SerializeField] GameObject cosmeticBuyButton;
     [SerializeField] TextMeshProUGUI[] cosmeticStyleTexts;
+    [SerializeField] TextMeshProUGUI cosmeticPriceText;
     [SerializeField] TextMeshProUGUI[] skillLevelTexts;
+    [SerializeField] TextMeshProUGUI[] skillPriceTexts;
     [SerializeField] TextMeshProUGUI coinText;
     [SerializeField] GameObject[] skillBuyButtons;
     [SerializeField] AudioClip[] buySounds;
@@ -79,7 +81,11 @@ public sealed partial class MenuManager : MonoBehaviour
             else if (shopType == ShopType.Background) backgroundSelected = index;
             else if (shopType == ShopType.Obstacle) obstacleSelected = index;
         }
-        else cosmeticBuyButton.SetActive(true);
+        else
+        {
+            cosmeticBuyButton.SetActive(true);
+            cosmeticPriceText.text = "Buy: " +  (shopType == ShopType.Bird ? BirdUnlockCost.ToString() : shopType == ShopType.Background ? BackgroundUnlockCost.ToString() : ObstacleUnlockCost.ToString()) + " coin";
+        }
 
         UpdateCosmeticItemUI();
     }
@@ -131,5 +137,6 @@ public sealed partial class MenuManager : MonoBehaviour
         skillLevelTexts[1].text = skill2Level + " / 3";
         skillBuyButtons[0].SetActive(skill1Level < 3);
         skillBuyButtons[1].SetActive(skill2Level < 3);
+        foreach (TextMeshProUGUI text in skillPriceTexts) text.text = "Buy: " + SkillUnlockCost.ToString() + " coin";
     }
 }

@@ -62,8 +62,12 @@ public sealed partial class MenuManager : MonoBehaviour
     void SetDifficulty(int index)
     {
         difficulty = index;
+        UpdateDifficultyTextColors();
+    }
+    void UpdateDifficultyTextColors()
+    {
         foreach (TextMeshProUGUI text in difficultyTexts) text.color = Color.white;
-        difficultyTexts[index].color = Color.yellow;
+        difficultyTexts[difficulty].color = Color.yellow;
     }
 
     // Updates the checkmark sprite based on whether the option is enabled or disabled

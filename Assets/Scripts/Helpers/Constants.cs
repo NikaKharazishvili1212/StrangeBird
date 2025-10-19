@@ -5,7 +5,7 @@ public static class Constants
     public const int MaxBirdTypes = 8, MaxBackgroundTypes = 8, MaxObstacleTypes = 6;
 
     // ---------- Buying Costs ----------
-    public const int BirdUnlockCost = 50, BackgroundUnlockCost = 50, ObstacleUnlockCost = 50, SkillUnlockCost = 100;
+    public const int BirdUnlockCost = 60, BackgroundUnlockCost = 60, ObstacleUnlockCost = 60, SkillUnlockCost = 120;
 
     // ---------- Probabilities (percent) ----------
     public const int BirdSpawnChance = 40, BirdMoveRightChance = 70, BirdChatChance = 30;
