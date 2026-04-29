@@ -6,8 +6,8 @@ showcasing clean, performant, and modular code.
 ## Features
 - **Core Gameplay**: Refined Flappy Bird mechanics with smooth physics.
 - **Skill System**:
-  - *Luck*: Increases coin spawn probability.
-  - *Shield*: Grants temporary invincibility with a cooldown.
+  - *Greed*: Higher levels of this skill give a chance to collect double coins.
+  - *Shield*: Makes the player invulnerable for 2 seconds. Higher levels of this skill reduce its cooldown.
 - **Customization**: Unlockable birds, backgrounds, and obstacle styles.
 - **Progression**: Earn coins and upgrade skills through the shop.
 - **Dynamic Environment**: Day/night cycle with decorative flying birds.
