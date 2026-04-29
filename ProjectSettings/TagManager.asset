@@ -5,10 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Coin
-  - Collider
   - Obstacle
   - Bird
-  - Enemy
   layers:
   - Default
   - TransparentFX

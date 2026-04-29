@@ -1,10 +1,9 @@
-/[Ll]ibrary/
-/[Tt]emp/
-/[Ll]ogs/
-/[Uu]ser[Ss]ettings/
-
+/Library
+/Logs
+/Temp
+/UserSettings
+/obj
 *.csproj
-*.sln
-
+*.slnx
 .vscode/
 .vsconfig

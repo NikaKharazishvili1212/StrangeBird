@@ -1,9 +1,9 @@
 using TMPro;
 using UnityEngine;
-
 using static Utils;
 using static Constants;
 
+/// <summary>Handles bird movement, random visual variations, and chat bubble display.</summary>
 public sealed class Bird : Movable
 {
     [SerializeField] GameObject chatBubble;
@@ -12,7 +12,7 @@ public sealed class Bird : Movable
     [SerializeField] AudioClip[] birdChatSounds;
     [SerializeField] Animator animator;
     [SerializeField] RuntimeAnimatorController[] birdVariationAnimators;
-    float moveSpeed;
+    static float moveSpeed;
 
     // Collection of random bird-themed chat messages that can be displayed by flying birds
     static readonly string[] BirdChatMessages = new string[]
@@ -34,56 +34,53 @@ public sealed class Bird : Movable
     // Bird's moving speed depends on game difficulty
     void Awake() => moveSpeed = gameManager.difficulty == 0 ? EasyBirdSpeed : gameManager.difficulty == 1 ? MediumBirdSpeed : HardBirdSpeed;
 
+    // Initialize bird on spawn: reposition, randomize look, move, and maybe show chat
     void OnEnable()
     {
-        TeleportToRight();
+        TeleportToStartingPosition();
         LoadRandomBirdVariation();
-
-        // 70% chance to move left, 30% chance to move right
-        if (PercentChanceSuccess(BirdMoveRightChance)) Move(MoveDirection.Left);
-        else Move(MoveDirection.Right);
-
-        // 30% chance to show chat bubble with random message
-        if (PercentChanceSuccess(BirdChatChance)) ShowChatMessage();
-        else chatBubble.SetActive(false);
+        Move();
+        ShowChatMessage();
     }
-
-    // Teleport to the right side of the screen with random Y position (for pooling)
-    public override void TeleportToRight() => transform.position = new Vector2(6f, Random.Range(-1.5f, 1.5f));
 
     // Loads a random bird visual variation from available animators
     void LoadRandomBirdVariation() => animator.runtimeAnimatorController = birdVariationAnimators[Random.Range(0, birdVariationAnimators.Length)];
 
-    // Bird only moves left or right (never stops)
-    public override void Move(MoveDirection direction)
+    // Chance to show chat bubble with random message
+    void ShowChatMessage()
     {
-        if (direction == MoveDirection.Left)
+        if (PercentChanceSuccess(BirdChatChance))
         {
-            rb.velocity = new Vector2(moveSpeed, 0f);
+            audioSource.PlayOneShot(birdChatSounds[Random.Range(0, birdChatSounds.Length)]);
+            chatBubble.SetActive(true);
+            chatText.text = BirdChatMessages[Random.Range(0, BirdChatMessages.Length)];
+        }
+        else chatBubble.SetActive(false);
+    }
+
+    // Teleport to the right side of the screen with random Y position (for pooling)
+    public override void TeleportToStartingPosition() => transform.position = new Vector2(BirdSpawnX, Random.Range(-SpawnY, SpawnY));
+
+    // Chance to move right or left
+    public override void Move()
+    {
+        if (PercentChanceSuccess(BirdMoveRightChance))
+        {
+            rb.linearVelocity = new Vector2(moveSpeed, 0f);
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             chatText.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
         }
-        else if (direction == MoveDirection.Right)
+        else
         {
-            rb.velocity = new Vector2(-1f, 0f);
+            rb.linearVelocity = new Vector2(-1f, 0f);
             transform.rotation = Quaternion.Euler(0f, 180f, 0f);
             chatText.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
         }
-        else Debug.LogWarning("Invalid direction! Bird can only move left or right!");
-    }
-
-    // Show chat bubble with random message
-    void ShowChatMessage()
-    {
-        audioSource.PlayOneShot(birdChatSounds[Random.Range(0, birdChatSounds.Length)]);
-        chatBubble.SetActive(true);
-        chatText.text = BirdChatMessages[Random.Range(0, BirdChatMessages.Length)];
     }
 
     // Called when player dies to make birds moving right slowly, fly away
-    public void FlyAwayAfterPlayerDeath()
-    {
-        if(rb.velocityX == -1f)
-            rb.velocity = new Vector2(-moveSpeed, 0f);
-    }
+    public void FlyAwayAfterPlayerDeath() { if (rb.linearVelocityX == -1f) rb.linearVelocity = new Vector2(-moveSpeed, 0f); }
+
+    // This guy never needs Stop() method
+    public override void Stop() => throw new System.NotImplementedException("This method must be overridden in derived classes.");
 }

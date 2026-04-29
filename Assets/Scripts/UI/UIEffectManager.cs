@@ -1,8 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-// Centralized manager for UI visual and audio effects, providing cursor textures, tooltip display, and button sounds to all interactive UI elements through a singleton pattern
-// This architecture eliminates duplicate resource references across multiple UI components, optimizing memory usage
+/// <summary>Singleton manager for shared UI effects including cursor, tooltip, and button sounds.</summary>
 public class UIEffectsManager : MonoBehaviour
 {
     [SerializeField] AudioSource audioSource;
@@ -29,7 +28,7 @@ public class UIEffectsManager : MonoBehaviour
         Vector2 mousePos = Input.mousePosition;
         // Offset tooltip vertically based on cursor position: push up if near bottom, push down if near top
         mousePos.y = mousePos.y > Screen.height * 0.5f ? mousePos.y - 100 : mousePos.y + 100;
-        tooltipBackground.position = mousePos;  // Set tooltip position near mouse
-        tooltipBackground.pivot = new Vector2(mousePos.x / Screen.width, mousePos.y / Screen.height);  // Adjust pivot so tooltip stays inside screen
+        tooltipBackground.position = mousePos; // Set tooltip position near mouse
+        tooltipBackground.pivot = new Vector2(mousePos.x / Screen.width, mousePos.y / Screen.height); // Adjust pivot so tooltip stays inside screen
     }
 }

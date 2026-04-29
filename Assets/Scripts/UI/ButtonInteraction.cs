@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// Handles UI button interactions including cursor changes, tooltips, and sound effects
+/// <summary>Handles UI button hover, click sounds, cursor changes, and tooltip display.</summary>
 public sealed class ButtonInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     static UIEffectsManager UIEM => UIEffectsManager.Instance;

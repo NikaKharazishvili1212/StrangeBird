@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.U2D;
 
-// Loader for player cosmetics (backgrounds/pipes). Uses PlayerPrefs to determine which cosmetic is active.
+/// <summary>Loads player cosmetic sprites (backgrounds, obstacles) from a sprite atlas based on PlayerPrefs.</summary>
 public sealed class SpriteAtlasLoader : MonoBehaviour
 {
     [SerializeField] SpriteAtlas spriteAtlas;
@@ -9,6 +9,7 @@ public sealed class SpriteAtlasLoader : MonoBehaviour
     [SerializeField] SpriteType type;
     [SerializeField] SpriteRenderer sprite;
 
+    // Load the correct cosmetic sprite based on player's saved selection
     void Awake()
     {
         if (type == SpriteType.Background)
