@@ -49,7 +49,7 @@ public sealed class Bird : Movable
     // Chance to show chat bubble with random message
     void ShowChatMessage()
     {
-        if (PercentChanceSuccess(BirdChatChance))
+        if (PercentChance(BirdChatChance))
         {
             audioSource.PlayOneShot(birdChatSounds[Random.Range(0, birdChatSounds.Length)]);
             chatBubble.SetActive(true);
@@ -64,7 +64,7 @@ public sealed class Bird : Movable
     // Chance to move right or left
     public override void Move()
     {
-        if (PercentChanceSuccess(BirdMoveRightChance))
+        if (PercentChance(BirdMoveRightChance))
         {
             rb.linearVelocity = new Vector2(moveSpeed, 0f);
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);

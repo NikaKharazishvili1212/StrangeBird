@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /// <summary>Contains all configurable values and magic numbers used throughout the game.</summary>
 public static class Constants
 {
@@ -46,6 +48,7 @@ public static class Constants
     public const int EasyScoreIncrement = 2, MediumScoreIncrement = 3, HardScoreIncrement = 4;
 
     // ---------- Other things ----------
-    public const float WhooshLifespan = 0.5f;
+    public const float WhooshLifespan = 0.3f;
+    public const float WhooshSpeed = 2;
     public const float DayNightCycleInterval = 0.2f;
 }

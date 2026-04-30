@@ -19,7 +19,7 @@ public sealed class Obstacle : Movable
     // Initialize obstacle on spawn: randomize ping-pong direction, reposition and start moving
     void OnEnable()
     {
-        pingPongSpeed = PercentChanceSuccess(50) ? basePingPongSpeed : -basePingPongSpeed;
+        pingPongSpeed = PercentChance(50) ? basePingPongSpeed : -basePingPongSpeed;
         TeleportToStartingPosition();
         Move();
     }

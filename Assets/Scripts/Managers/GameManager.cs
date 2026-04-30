@@ -64,7 +64,7 @@ public sealed partial class GameManager : MonoBehaviour
 
     void UpdateFpsHud() => fpsText.text = "Fps: " + Mathf.RoundToInt(1 / Time.deltaTime).ToString();
 
-    void BirdsPool() { if (PercentChanceSuccess(BirdSpawnChance)) PoolObject(birdsToPool); }
+    void BirdsPool() { if (PercentChance(BirdSpawnChance)) PoolObject(birdsToPool); }
 
     void ObstaclesAndCoinsPool()
     {
@@ -114,8 +114,8 @@ public sealed partial class GameManager : MonoBehaviour
     // Increments coin count and updates UI (called when Player collects a coin)
     void TakeCoin()
     {
-        int coinsEarned  = skill1GreedLevel == 0 ? 1 : PercentChanceSuccess(skill1GreedLevel == 1 ? Skill1Level1CoinDuplicationChance : skill1GreedLevel == 2 ? Skill1Level2CoinDuplicationChance : Skill1Level3CoinDuplicationChance) ? 2 : 1;
-        coin += coinsEarned ;
+        int coinsEarned = skill1GreedLevel == 0 ? 1 : PercentChance(skill1GreedLevel == 1 ? Skill1Level1CoinDuplicationChance : skill1GreedLevel == 2 ? Skill1Level2CoinDuplicationChance : Skill1Level3CoinDuplicationChance) ? 2 : 1;
+        coin += coinsEarned;
         coinsCollectedThisRound += coinsEarned;
         coinText.text = coin.ToString();
         currentScore += CoinScoreIncrement;
@@ -132,7 +132,7 @@ public sealed partial class GameManager : MonoBehaviour
         StopGameplayLoops();
 
         totalDeaths += 1;
-        deathText.text = $"Total Deaths: {totalDeaths}\nHigh Score: {highScore}\nCoins Collected This Round: {coinsCollectedThisRound}";
+        deathText.text = $"Total Deaths: {totalDeaths}\nHighest Score: {highScore}\nCoins Collected This Round: {coinsCollectedThisRound}";
         coinsCollectedThisRound = 0;
         this.Wait(0.5f, () => menu.SetActive(true));
     }

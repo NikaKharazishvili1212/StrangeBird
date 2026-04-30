@@ -53,7 +53,7 @@ public sealed class Player : MonoBehaviour
                 if (!whooshVFX.gameObject.activeInHierarchy)
                 {
                     whooshVFX.Activate();
-                    whooshVFX.transform.position = transform.position - Vector3.up * 0.1f;
+                    whooshVFX.transform.position = transform.position - Vector3.up * 0.15f;
                     break;
                 }
             }
@@ -98,6 +98,7 @@ public sealed class Player : MonoBehaviour
         isAlive = false;
         animator.enabled = false;
         rb.linearVelocity = Vector2.zero;
+        foreach (var whooshVFX in whooshVFXPool) whooshVFX.gameObject.SetActive(false);
         OnDeath?.Invoke();
     }
 

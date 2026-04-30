@@ -1,21 +1,19 @@
 using UnityEngine;
+using static Constants;
 
 /// <summary>Pooled by player on each jump; has it's own lifespan.</summary>
 public class Whoosh : MonoBehaviour
 {
-    float lifespan = Constants.WhooshLifespan;
+    [SerializeField] Animator animator;
 
-    // Called by player
+    // Pooled by player
     public void Activate()
     {
-        lifespan = Constants.WhooshLifespan;
         gameObject.SetActive(true);
+        animator.Play(0); // There's only one animation
+        this.Wait(WhooshLifespan, () => gameObject.SetActive(false));
     }
 
-    // Deactivate after lifespan
-    void Update()
-    {
-        if (lifespan <= 0) gameObject.SetActive(false);
-        lifespan -= Time.deltaTime;
-    }
+    // Move back
+    void Update() => transform.position += Vector3.left * (WhooshSpeed * Time.deltaTime);
 }

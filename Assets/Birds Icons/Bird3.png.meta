@@ -527,6 +527,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
     nameFileIdTable:
       Bird3_Egret2_0: 7427371064655512571
       Bird3_Egret2_1: 6097490425416420950

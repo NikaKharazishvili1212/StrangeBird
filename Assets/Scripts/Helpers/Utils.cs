@@ -2,24 +2,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using TMPro;
 
 // Static utility methods for common game operations
 public static class Utils
 {
-    // Returns true if a random number between 0-99 is less than the given percent
-    public static bool PercentChanceSuccess(int percent) => Random.Range(0, 100) < percent;
-
-    // Provides an async awaitable delay method as an extension to MonoBehaviour
-    // Usage: this.Wait(2f, () => { Your codes here });
-    public static async void Wait(this MonoBehaviour monoBehaviour, float delay, UnityAction action)
+    // Caches WaitForSeconds by duration to avoid repeated allocations
+    static readonly Dictionary<float, WaitForSeconds> Cache = new();
+    // Waits for the given seconds then invokes the action; safe if the object is destroyed. Usage: this.Wait(2f, () => { Your codes here });
+    public static void Wait(this MonoBehaviour mb, float seconds, UnityAction action) => mb.StartCoroutine(WaitRoutine(mb, seconds, action));
+    static IEnumerator WaitRoutine(MonoBehaviour mb, float seconds, UnityAction action)
     {
-        await Task.Delay((int)(delay * 1000));
-        if (monoBehaviour) action?.Invoke();
-        else Debug.LogWarning("MonoBehaviour destroyed before wait completed, action not invoked");
+        if (!Cache.TryGetValue(seconds, out var wait)) Cache[seconds] = wait = new WaitForSeconds(seconds);
+        yield return wait;
+        if (mb) action?.Invoke();
     }
+
+    // Returns true if a random roll succeeds for the given percent (0-100)
+    public static bool PercentChance(int percent) => Random.Range(0, 100) < percent;
 
     // Exit the application in build, or stop play mode in Unity Editor
     // Ensure Application.Quit() is called first (even in Editor) to trigger OnApplicationQuit() and save data correctly

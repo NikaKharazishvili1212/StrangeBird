@@ -527,6 +527,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
     nameFileIdTable:
       B4_s5_0: -1825432720426759422
       B4_s5_1: 4508137632666172230
