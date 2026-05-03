@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.U2D;
 using TMPro;
-using VInspector;
+using Nikspector;
+using static Utils;
 using static Constants;
 
 // Partial class for managing the shop menu, including buying and selecting cosmetics and skills
@@ -41,8 +42,7 @@ public sealed partial class MenuManager : MonoBehaviour
 
         // Determine item count and set text visibility (how many)
         int itemCount = shopType == ShopType.Bird ? MaxBirdTypes : shopType == ShopType.Background ? MaxBackgroundTypes : shopType == ShopType.Obstacle ? MaxObstacleTypes : 0;
-        for (int i = 0; i < cosmeticStyleTexts.Length; i++)
-            cosmeticStyleTexts[i].gameObject.SetActive(i < itemCount);
+        for (int i = 0; i < cosmeticStyleTexts.Length; i++) cosmeticStyleTexts[i].gameObject.SetActive(i < itemCount);
 
         // Update selected item cost based on shop type
         selectedItemCost = shopType == ShopType.Bird ? BirdUnlockCost : shopType == ShopType.Background ? BackgroundUnlockCost : ObstacleUnlockCost;
@@ -83,7 +83,7 @@ public sealed partial class MenuManager : MonoBehaviour
         else
         {
             cosmeticBuyButton.SetActive(true);
-            cosmeticPriceText.text = "Buy: " +  (shopType == ShopType.Bird ? BirdUnlockCost.ToString() : shopType == ShopType.Background ? BackgroundUnlockCost.ToString() : ObstacleUnlockCost.ToString()) + " coin";
+            cosmeticPriceText.text = "Buy: " + (shopType == ShopType.Bird ? BirdUnlockCost.ToString() : shopType == ShopType.Background ? BackgroundUnlockCost.ToString() : ObstacleUnlockCost.ToString()) + " coin";
         }
 
         UpdateCosmeticItemUI();
@@ -94,7 +94,7 @@ public sealed partial class MenuManager : MonoBehaviour
     {
         if (coin >= selectedItemCost)
         {
-            audioSource.PlayOneShot(buySounds[Random.Range(0, buySounds.Length)]);
+            audioSource.PlayOneShot(GetArrayRandomElement(buySounds));
             coin -= selectedItemCost;
             coinText.text = coin.ToString();
             cosmeticBuyButton.SetActive(false);
@@ -121,7 +121,7 @@ public sealed partial class MenuManager : MonoBehaviour
     {
         if (coin >= SkillUnlockCost)
         {
-            audioSource.PlayOneShot(buySounds[Random.Range(0, buySounds.Length)]);
+            audioSource.PlayOneShot(GetArrayRandomElement(buySounds));
             coin -= SkillUnlockCost;
             coinText.text = coin.ToString();
 

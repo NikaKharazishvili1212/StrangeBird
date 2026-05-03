@@ -2,18 +2,18 @@ using UnityEngine;
 using static Utils;
 using static Constants;
 
-/// <summary>Handles obstacle movement, horizontal scrolling, and vertical ping-pong based on difficulty.</summary>
+/// <summary>Handles obstacle movement, horizontal scrolling, and vertical ping-pong based on game speed.</summary>
 public sealed class Obstacle : Movable
 {
     static float moveSpeed;
     static float basePingPongSpeed;
     float pingPongSpeed;
 
-    // Called by GameManager once at game start; sets move and ping-pong speed based on difficulty
-    public static void SetSpeed(int difficulty)
+    // Called by GameManager once at game start; sets move and ping-pong speed based on game speed
+    public static void SetSpeed(int gameSpeed)
     {
-        moveSpeed = difficulty == 0 ? EasyObstacleSpeed : difficulty == 1 ? MediumObstacleSpeed : HardObstacleSpeed;
-        basePingPongSpeed = difficulty == 0 ? EasyObstaclePingPongSpeed : difficulty == 1 ? MediumObstaclePingPongSpeed : HardObstaclePingPongSpeed;
+        moveSpeed = gameSpeed == 0 ? SlowObstacleSpeed : gameSpeed == 1 ? MediumObstacleSpeed : FastObstacleSpeed;
+        basePingPongSpeed = gameSpeed == 0 ? SlowObstaclePingPongSpeed : gameSpeed == 1 ? MediumObstaclePingPongSpeed : FastObstaclePingPongSpeed;
     }
 
     // Initialize obstacle on spawn: randomize ping-pong direction, reposition and start moving
@@ -29,14 +29,14 @@ public sealed class Obstacle : Movable
     {
         if (rb.linearVelocity.x == 0) return;
         
-        bool hitCeiling = transform.position.y >= ObstaclePingPongYMax && pingPongSpeed > 0;
-        bool hitFloor = transform.position.y <= ObstaclePingPongYMin && pingPongSpeed < 0;
+        bool hitCeiling = transform.position.y >= ObstaclePingPongY && pingPongSpeed > 0;
+        bool hitFloor = transform.position.y <= -ObstaclePingPongY && pingPongSpeed < 0;
         if (hitCeiling || hitFloor) pingPongSpeed = -pingPongSpeed;
         rb.linearVelocity = new Vector2(moveSpeed, pingPongSpeed);
     }
 
     // Teleport to the right side of the screen with random Y position (for pooling)
-    public override void TeleportToStartingPosition() => transform.position = new Vector2(ObstacleSpawnX, Random.Range(-SpawnY, SpawnY));
+    public override void TeleportToStartingPosition() => transform.position = new Vector2(ObstacleSpawnX, Random.Range(-ObstacleSpawnY, ObstacleSpawnY));
 
     // Move left with ping-pong
     public override void Move() => rb.linearVelocity = new Vector2(moveSpeed, pingPongSpeed);

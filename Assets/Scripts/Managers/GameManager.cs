@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using VInspector;
+using Nikspector;
 using static Utils;
 using static Constants;
 
@@ -17,7 +17,7 @@ public sealed partial class GameManager : MonoBehaviour
     [SerializeField] SpriteRenderer background;
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip newHighScoreSound, uiSelectSound;
-    int currentScore = 0, coinsCollectedThisRound = 0;
+    int currentScore, coinsCollectedThisRound;
 
     [Tab("ObjectsToPool")]
     [SerializeField] Movable[] birdsToPool, obstaclesToPool, coinsToPool;
@@ -28,7 +28,7 @@ public sealed partial class GameManager : MonoBehaviour
     int minutes = 0, hours = 12;
 
     [Tab("LoadAndSave")]
-    public int difficulty { get; private set; } // Public getter for Bird class to access difficulty level
+    public int gameSpeed { get; private set; } // Public getter for Bird class to access
     int highScore, coin, totalDeaths, skill1GreedLevel;
     bool showFpsOption, spawnBirdsOption;
 
@@ -39,18 +39,18 @@ public sealed partial class GameManager : MonoBehaviour
         player.OnDeath += StopAllObjects;
         player.OnRespawn += Restart;
         StartGameplayLoops();
+        if (showFpsOption) InvokeRepeating(nameof(UpdateFpsHud), 0, FPSHudUpdateInterval);
     }
 
     #region InvokeRepeatings
     // Start all InvokeRepeating gameplay loops
     void StartGameplayLoops()
     {
-        if (showFpsOption) InvokeRepeating(nameof(UpdateFpsHud), 0, 1);
         if (spawnBirdsOption) InvokeRepeating(nameof(BirdsPool), BirdsSpawnDelay, BirdsSpawnDelay);
-        float obstaclesAndCoinsSpawnDelay = difficulty == 0 ? EasyObstaclesAndCoinsSpawnDelay : difficulty == 1 ? MediumObstaclesAndCoinsSpawnDelay : HardObstaclesAndCoinsSpawnDelay;
+        float obstaclesAndCoinsSpawnDelay = gameSpeed == 0 ? SlowObstaclesAndCoinsSpawnDelay : gameSpeed == 1 ? MediumObstaclesAndCoinsSpawnDelay : FastObstaclesAndCoinsSpawnDelay;
         InvokeRepeating(nameof(ObstaclesAndCoinsPool), obstaclesAndCoinsSpawnDelay, obstaclesAndCoinsSpawnDelay);
         InvokeRepeating(nameof(DayNightCycle), DayNightCycleInterval, DayNightCycleInterval); // Affects background color, sun/moon icon rotation and timer
-        InvokeRepeating(nameof(GainScore), ScoreGainInterval, ScoreGainInterval); // Increase score over time based on difficulty
+        InvokeRepeating(nameof(GainScore), ScoreGainInterval, ScoreGainInterval); // Increase score over time based on game speed
     }
 
     // Cancel all active InvokeRepeating gameplay loops
@@ -83,8 +83,8 @@ public sealed partial class GameManager : MonoBehaviour
         float timeOfDay = (hours + (minutes / 60f)) / 24f; // Calculate time as a value between 0 and 1 (0 is midnight, 0.5 is noon, 1 is midnight)
         float adjustedTimeOfDay = (timeOfDay + 0.5f) % 1f; // Adjust timeOfDay to ensure 12:00 is the peak daylight
 
-        Color dayColor = new Color(1f, 1f, 1f); // White (max light)
-        Color nightColor = new Color(0f, 0f, 0f); // Black (no light)
+        Color dayColor = new Color(1, 1, 1); // White (max light)
+        Color nightColor = new Color(0, 0, 0); // Black (no light)
 
         if (adjustedTimeOfDay < 0.5f) background.color = Color.Lerp(dayColor, nightColor, adjustedTimeOfDay * 2);  // Morning to afternoon (dayColor to nightColor)
         else background.color = Color.Lerp(nightColor, dayColor, (adjustedTimeOfDay - 0.5f) * 2);  // Afternoon to morning (nightColor to dayColor)
@@ -94,10 +94,10 @@ public sealed partial class GameManager : MonoBehaviour
         sunMoonIcon.localRotation = Quaternion.Euler(0, 0, rotationAngle); // Apply the rotation to the RectTransform
     }
 
-    // Increment score each tick based on difficulty
+    // Increment score each tick based on gameSpeed
     void GainScore()
     {
-        currentScore += difficulty == 0 ? EasyScoreIncrement : difficulty == 1 ? MediumScoreIncrement : HardScoreIncrement;
+        currentScore += gameSpeed == 0 ? SlowScoreIncrement : gameSpeed == 1 ? MediumScoreIncrement : FastScoreIncrement;
         UpdateScore();
     }
 
@@ -188,16 +188,16 @@ public sealed partial class GameManager : MonoBehaviour
         coinText.text = coin.ToString();
         skill1GreedLevel = PlayerPrefs.GetInt("Skill1GreedLevel");
 
-        // Load general settings (volume, game difficulty, fps-showing option, bird-spawning option)
+        // Load general settings (volume, game speed, fps-showing option, bird-spawning option)
         AudioListener.volume = PlayerPrefs.GetFloat("GlobalVolume", 1);
-        difficulty = PlayerPrefs.GetInt("Difficulty");
+        gameSpeed = PlayerPrefs.GetInt("Game Speed");
         showFpsOption = PlayerPrefs.GetInt("ShowFps") == 1;
         fpsText.gameObject.SetActive(showFpsOption);
         spawnBirdsOption = PlayerPrefs.GetInt("SpawnBirds") == 1;
 
-        // Load values based on difficulty
-        Obstacle.SetSpeed(difficulty); // Set static speed for all obstacles
-        Coin.SetSpeed(difficulty); // Set static speed for all coins
+        // Load values based on game speed
+        Obstacle.SetSpeed(gameSpeed); // Set static speed for all obstacles
+        Coin.SetSpeed(gameSpeed); // Set static speed for all coins
     }
 
     void OnApplicationQuit() => SaveStats();

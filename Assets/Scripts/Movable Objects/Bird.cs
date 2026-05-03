@@ -31,8 +31,8 @@ public sealed class Bird : Movable
         "Flap happy!", "Bird-brained fun!", "Fluff and stuff!"
     };
 
-    // Bird's moving speed depends on game difficulty
-    void Awake() => moveSpeed = gameManager.difficulty == 0 ? EasyBirdSpeed : gameManager.difficulty == 1 ? MediumBirdSpeed : HardBirdSpeed;
+    // Bird's moving speed depends on game speed
+    void Awake() => moveSpeed = gameManager.gameSpeed == 0 ? SlowBirdSpeed : gameManager.gameSpeed == 1 ? MediumBirdSpeed : FastBirdSpeed;
 
     // Initialize bird on spawn: reposition, randomize look, move, and maybe show chat
     void OnEnable()
@@ -40,46 +40,41 @@ public sealed class Bird : Movable
         TeleportToStartingPosition();
         LoadRandomBirdVariation();
         Move();
-        ShowChatMessage();
     }
 
     // Loads a random bird visual variation from available animators
     void LoadRandomBirdVariation() => animator.runtimeAnimatorController = birdVariationAnimators[Random.Range(0, birdVariationAnimators.Length)];
 
-    // Chance to show chat bubble with random message
-    void ShowChatMessage()
-    {
-        if (PercentChance(BirdChatChance))
-        {
-            audioSource.PlayOneShot(birdChatSounds[Random.Range(0, birdChatSounds.Length)]);
-            chatBubble.SetActive(true);
-            chatText.text = BirdChatMessages[Random.Range(0, BirdChatMessages.Length)];
-        }
-        else chatBubble.SetActive(false);
-    }
-
     // Teleport to the right side of the screen with random Y position (for pooling)
-    public override void TeleportToStartingPosition() => transform.position = new Vector2(BirdSpawnX, Random.Range(-SpawnY, SpawnY));
+    public override void TeleportToStartingPosition() => transform.position = new Vector2(BirdSpawnX, Random.Range(-BirdSpawnY, BirdSpawnY));
 
     // Chance to move right or left
     public override void Move()
     {
         if (PercentChance(BirdMoveRightChance))
         {
-            rb.linearVelocity = new Vector2(moveSpeed, 0f);
-            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-            chatText.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+            rb.linearVelocityX = -1;
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+
+            // Chance to show chat
+            if (PercentChance(BirdChatChance))
+            {
+                audioSource.PlayOneShot(GetArrayRandomElement(birdChatSounds));
+                chatBubble.SetActive(true);
+                chatText.text = GetArrayRandomElement(BirdChatMessages);
+            }
+            else chatBubble.SetActive(false);
         }
         else
         {
-            rb.linearVelocity = new Vector2(-1f, 0f);
-            transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-            chatText.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+            rb.linearVelocityX = moveSpeed;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            chatBubble.SetActive(false);
         }
     }
 
     // Called when player dies to make birds moving right slowly, fly away
-    public void FlyAwayAfterPlayerDeath() { if (rb.linearVelocityX == -1f) rb.linearVelocity = new Vector2(-moveSpeed, 0f); }
+    public void FlyAwayAfterPlayerDeath() { if (rb.linearVelocityX == -1) rb.linearVelocity = new Vector2(-moveSpeed, 0); }
 
     // This guy never needs Stop() method
     public override void Stop() => throw new System.NotImplementedException("This method must be overridden in derived classes.");

@@ -7,11 +7,12 @@ TagManager:
   - Coin
   - Obstacle
   - Bird
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Background
   - Water
   - UI
   - 

@@ -2,30 +2,31 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
-using VInspector;
+using Nikspector;
+using static Constants;
 
-// Partial class for managing the options menu, including difficulty, sound, FPS display, and bird spawning
+// Partial class for managing the options menu, including game speed, sound, FPS display, and bird spawning
 public sealed partial class MenuManager : MonoBehaviour
 {
     [Tab("Options Menu")]
-    [SerializeField] TextMeshProUGUI[] difficultyTexts;
+    [SerializeField] TextMeshProUGUI[] gameSpeedTexts;
     [SerializeField] TextMeshProUGUI fpsText, flapKeyText;
     [SerializeField] Image soundsCheckmark, birdsCheckmark, fpsCheckmark;
     [SerializeField] AudioClip keySelectSound;
     string flapKey;
-    int difficulty, spawnBirds, showFps;
+    int gameSpeed, spawnBirds, showFps;
 
-    enum MenuOption : byte { EasyDifficulty = 0, MediumDifficulty = 1, HardDifficulty = 2, ToggleSound = 3, ToggleBirds = 4, ToggleFps = 5, SelectFlapKey = 6 }
+    enum MenuOption : byte { EasyGameSpeed = 0, MediumGameSpeed = 1, FastGameSpeed = 2, ToggleSound = 3, ToggleBirds = 4, ToggleFps = 5, SelectFlapKey = 6 }
 
-    // Handles option menu selections (difficulty, sound, FPS, birds) using enum-based input
+    // Handles option menu selections (game speed, sound, FPS, birds) using enum-based input
     public void OptionsSelection(int index)
     {
         switch ((MenuOption)index)
         {
-            case MenuOption.EasyDifficulty:
-            case MenuOption.MediumDifficulty:
-            case MenuOption.HardDifficulty:
-                SetDifficulty(index);
+            case MenuOption.EasyGameSpeed:
+            case MenuOption.MediumGameSpeed:
+            case MenuOption.FastGameSpeed:
+                SetGameSpeed(index);
                 break;
             case MenuOption.ToggleSound:
                 AudioListener.volume = AudioListener.volume == 1 ? 0 : 1;
@@ -47,29 +48,28 @@ public sealed partial class MenuManager : MonoBehaviour
                 {
                     showFps = 1;
                     fpsText.gameObject.SetActive(true);
-                    InvokeRepeating(nameof(ShowFps), 0, 1f);
+                    InvokeRepeating(nameof(ShowFps), 0, FPSHudUpdateInterval);
                     SetCheckmarkSprite(fpsCheckmark, true);
                 }
                 break;
             case MenuOption.SelectFlapKey:
-                StopCoroutine(nameof(DetectFlapKey));
-                StartCoroutine(DetectFlapKey());
+                StartCoroutine(nameof(DetectFlapKey));
                 break;
         }
     }
 
-    // Sets the game difficulty and updates the UI to reflect the current selection
-    void SetDifficulty(int index)
+    // Sets the game speed and updates the UI to reflect the current selection
+    void SetGameSpeed(int index)
     {
-        difficulty = index;
-        UpdateDifficultyTextColors();
+        gameSpeed = index;
+        UpdateGameSpeedTextColors();
     }
     
-    // Update difficulty button text colors to reflect current selection
-    void UpdateDifficultyTextColors()
+    // Update game speed button text colors to reflect current selection
+    void UpdateGameSpeedTextColors()
     {
-        foreach (TextMeshProUGUI text in difficultyTexts) text.color = Color.white;
-        difficultyTexts[difficulty].color = Color.yellow;
+        foreach (TextMeshProUGUI text in gameSpeedTexts) text.color = Color.white;
+        gameSpeedTexts[gameSpeed].color = Color.yellow;
     }
 
     // Updates the checkmark sprite based on whether the option is enabled or disabled
@@ -91,7 +91,8 @@ public sealed partial class MenuManager : MonoBehaviour
                 {
                     audioSource.PlayOneShot(keySelectSound);
                     flapKey = key.ToString();
-                    flapKeyText.text = FormatKeyName(key.ToString());
+                    // Formats key names for display: Alpha1 -> A1, Keypad1 -> K1, LeftShift -> LShift, RightShift -> RShift, BackQuote -> BQuote, BackSlash -> BSlash, Backspace -> Bspace
+                    flapKeyText.text = key.ToString().Replace("Alpha", "A").Replace("Keypad", "K").Replace("Left", "L").Replace("Right", "R").Replace("Back", "B");
                     yield break;
                 }
             }
@@ -107,22 +108,4 @@ public sealed partial class MenuManager : MonoBehaviour
                   key != KeyCode.SysReq && key != KeyCode.Break &&
                   key != KeyCode.Numlock && key != KeyCode.CapsLock && key != KeyCode.ScrollLock)
     .ToArray();
-
-    // Formats key names for display
-    string FormatKeyName(string keyName)
-    {
-        return keyName
-        .Replace("Alpha", "A") // Alpha1 -> A1
-        .Replace("Keypad", "K") // Keypad1 -> K1
-        .Replace("Left", "L") // LeftShift -> LShift
-        .Replace("Right", "R") // RightShift -> RShift
-        .Replace("Back", "B"); // BackQuote -> BQuote, BackSlash -> BSlash, Backspace -> Bspace
-    }
-
-    // Stop key detection and restore the formatted key name if player exits without choosing
-    void ResetKey()
-    {
-        StopCoroutine(nameof(DetectFlapKey));
-        flapKeyText.text = FormatKeyName(flapKey);
-    }
 }
