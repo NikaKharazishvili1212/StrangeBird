@@ -5,7 +5,6 @@ using UnityEngine.U2D;
 using System.Collections;
 using static Utils;
 using static Constants;
-using Nikspector;
 
 /// <summary>Class for managing core gameplay.</summary>
 [DefaultExecutionOrder(-100)] // Ensures GameManager's awake initialization runs first
@@ -19,7 +18,7 @@ public sealed partial class GameManager : MonoBehaviour
     [SerializeField] Image loadingBar;
     [SerializeField] GameObject menu, loadingMenu;
     [SerializeField] TextMeshProUGUI loadingText, coinText, scoreText, deathText, fpsText;
-    [SerializeField] SpriteRenderer background;
+    [SerializeField] Image background;
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip uiSelectSound;
     int currentScore, coinsCollectedThisRound;
@@ -50,6 +49,7 @@ public sealed partial class GameManager : MonoBehaviour
         player.OnCoinTake += TakeCoin;
         player.OnDeath += StopAllObjects;
         player.OnRespawn += Restart;
+        background.sprite = spriteAtlas.GetSprite("Background" + PlayerPrefs.GetInt("BackgroundSelected", 0));
         StartGameplayLoops();
         if (showFpsOption) InvokeRepeating(nameof(UpdateFpsHud), 0, FPSHudUpdateInterval);
     }
