@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2ebd1914e883479478c9fb6929b7e8a9
+guid: 947670e17387b7149b9c1c8af75a5b61
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3710679209044608361
-    second: png-clipart-computer-icons-dialog-box-conversation-share-icon-others-text-online-chat-thumbnail-Photoroom_0
+      213: 710281850935052965
+    second: Cursor Target Move A_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -24,7 +24,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: png-clipart-computer-icons-dialog-box-conversation-share-icon-others-text-online-chat-thumbnail-Photoroom_0
+      name: Cursor Target Move A_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 114
-        height: 57
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9650882a41bfe7330800000000000000
-      internalID: 3710679209044608361
+      spriteID: 5aa0467849d6bd900800000000000000
+      internalID: 710281850935052965
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      png-clipart-computer-icons-dialog-box-conversation-share-icon-others-text-online-chat-thumbnail-Photoroom_0: 3710679209044608361
+      Cursor Target Move A_0: 710281850935052965
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

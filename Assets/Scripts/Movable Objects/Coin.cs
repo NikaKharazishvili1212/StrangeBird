@@ -9,6 +9,8 @@ public sealed class Coin : Movable
     // Called by GameManager once at game start
     public static void SetSpeed(int gameSpeed) => moveSpeed = gameSpeed == 0 ? SlowCoinSpeed : gameSpeed == 1 ? MediumCoinSpeed : FastCoinSpeed;
 
+    void Update() => DeactivateOnLeavingScreen();
+
     // Initialize coin on spawn: reposition and start moving
     void OnEnable()
     {

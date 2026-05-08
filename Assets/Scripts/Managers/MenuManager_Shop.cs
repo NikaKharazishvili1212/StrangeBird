@@ -94,7 +94,7 @@ public sealed partial class MenuManager : MonoBehaviour
     {
         if (coin >= selectedItemCost)
         {
-            audioSource.PlayOneShot(GetArrayRandomElement(buySounds));
+            audioSource.PlayOneShot(GetRandomElement(buySounds));
             coin -= selectedItemCost;
             coinText.text = coin.ToString();
             cosmeticBuyButton.SetActive(false);
@@ -121,7 +121,7 @@ public sealed partial class MenuManager : MonoBehaviour
     {
         if (coin >= SkillUnlockCost)
         {
-            audioSource.PlayOneShot(GetArrayRandomElement(buySounds));
+            audioSource.PlayOneShot(GetRandomElement(buySounds));
             coin -= SkillUnlockCost;
             coinText.text = coin.ToString();
 

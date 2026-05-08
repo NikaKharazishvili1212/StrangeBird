@@ -1,37 +1,18 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-/// <summary>Handles UI button hover, click sounds, cursor changes, and tooltip display.</summary>
+/// <summary>
+/// Per-button component. Delegates all effects to the scene-wide UIEffectsManager singleton.
+/// Attach to every interactive button; set tooltipText in Inspector (leave empty for no tooltip).
+/// </summary>
+[RequireComponent(typeof(UnityEngine.UI.Button))]
 public sealed class ButtonInteraction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    static UIEffectsManager UIEM => UIEffectsManager.Instance;
-    [SerializeField] string tooltipText;
+    static UIEffectsManager FX => UIEffectsManager.Instance;
+    [SerializeField] string tooltipText; // Leave empty to suppress tooltip for this button
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        UIEM.SetCursorHand();
-        UIEM.PlayHoverSound();
-
-        if (!string.IsNullOrEmpty(tooltipText))
-        {
-            UIEM.SetTooltipPosition();
-            UIEM.SetTooltipText(tooltipText);
-            UIEM.SetTooltipBackgroundActive(true);
-        }
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        UIEM.SetCursorArrow();
-        UIEM.SetTooltipBackgroundActive(false);
-    }
-
-    public void OnPointerClick(PointerEventData eventData) => UIEM.PlayClickSound();
-
-    // Clean up if button gets disabled while hovering
-    void OnDisable()
-    {
-        UIEM.SetCursorArrow();
-        UIEM.SetTooltipBackgroundActive(false);
-    }
+    public void OnPointerEnter(PointerEventData _) => FX.OnButtonEnter(tooltipText);
+    public void OnPointerClick(PointerEventData _) => FX.OnButtonClick();
+    public void OnPointerExit(PointerEventData _) => FX.OnButtonExit();
+    void OnDisable() => FX?.OnButtonExit();
 }

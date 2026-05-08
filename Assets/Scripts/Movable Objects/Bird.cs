@@ -1,12 +1,13 @@
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 using static Utils;
 using static Constants;
+using Unity.VisualScripting;
 
 /// <summary>Handles bird movement, random visual variations, and chat bubble display.</summary>
 public sealed class Bird : Movable
 {
-    [SerializeField] GameObject chatBubble;
     [SerializeField] TextMeshPro chatText;
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip[] birdChatSounds;
@@ -31,8 +32,21 @@ public sealed class Bird : Movable
         "Flap happy!", "Bird-brained fun!", "Fluff and stuff!"
     };
 
+    // Depletes as birds chat; refills from BirdChatMessages when empty so no message repeats until all are exhausted
+    static List<string> chatPool = new();
+
+    string TakeRandomChat()
+    {
+        if (chatPool.Count == 0) chatPool.AddRange(BirdChatMessages);
+        string msg = GetRandomElement(chatPool);
+        chatPool.Remove(msg);
+        return msg;
+    }
+
     // Bird's moving speed depends on game speed
-    void Awake() => moveSpeed = gameManager.gameSpeed == 0 ? SlowBirdSpeed : gameManager.gameSpeed == 1 ? MediumBirdSpeed : FastBirdSpeed;
+    void Awake() => moveSpeed = GameManager.Instance.GetGameSpeed() == 0 ? SlowBirdSpeed : GameManager.Instance.GetGameSpeed() == 1 ? MediumBirdSpeed : FastBirdSpeed;
+
+    void Update() => DeactivateOnLeavingScreen();
 
     // Initialize bird on spawn: reposition, randomize look, move, and maybe show chat
     void OnEnable()
@@ -45,12 +59,16 @@ public sealed class Bird : Movable
     // Loads a random bird visual variation from available animators
     void LoadRandomBirdVariation() => animator.runtimeAnimatorController = birdVariationAnimators[Random.Range(0, birdVariationAnimators.Length)];
 
+    // Deactivates on leaving screen to be pooled again later
+    public override void DeactivateOnLeavingScreen() { if (transform.position.x <= -6 || transform.position.x >= 7) gameObject.SetActive(false); }
+
     // Teleport to the right side of the screen with random Y position (for pooling)
     public override void TeleportToStartingPosition() => transform.position = new Vector2(BirdSpawnX, Random.Range(-BirdSpawnY, BirdSpawnY));
 
     // Chance to move right or left
     public override void Move()
     {
+        chatText.gameObject.SetActive(false);
         if (PercentChance(BirdMoveRightChance))
         {
             rb.linearVelocityX = -1;
@@ -59,23 +77,25 @@ public sealed class Bird : Movable
             // Chance to show chat
             if (PercentChance(BirdChatChance))
             {
-                audioSource.PlayOneShot(GetArrayRandomElement(birdChatSounds));
-                chatBubble.SetActive(true);
-                chatText.text = GetArrayRandomElement(BirdChatMessages);
+                this.Wait(BirdChatDelay, () =>
+                {
+                    if (!GameManager.Instance.player.isAlive) return; // If player is dead, then don't talk to him
+                    audioSource.PlayOneShot(GetRandomElement(birdChatSounds));
+                    chatText.gameObject.SetActive(true);
+                    chatText.text = TakeRandomChat();
+                });
             }
-            else chatBubble.SetActive(false);
         }
         else
         {
             rb.linearVelocityX = moveSpeed;
             transform.rotation = Quaternion.Euler(0, 0, 0);
-            chatBubble.SetActive(false);
+            chatText.gameObject.SetActive(false);
         }
     }
 
     // Called when player dies to make birds moving right slowly, fly away
     public void FlyAwayAfterPlayerDeath() { if (rb.linearVelocityX == -1) rb.linearVelocity = new Vector2(-moveSpeed, 0); }
 
-    // This guy never needs Stop() method
-    public override void Stop() => throw new System.NotImplementedException("This method must be overridden in derived classes.");
+    public override void Stop() => throw new System.NotImplementedException("Bird never needs Stop() method.");
 }

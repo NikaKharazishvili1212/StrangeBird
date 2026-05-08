@@ -1,36 +1,48 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Nikspector;
+using UnityEngine.U2D;
+using System.Collections;
 using static Utils;
 using static Constants;
+using Nikspector;
 
 /// <summary>Class for managing core gameplay.</summary>
+[DefaultExecutionOrder(-100)] // Ensures GameManager's awake initialization runs first
 public sealed partial class GameManager : MonoBehaviour
 {
-    [Tab("Main")]
-    [SerializeField] Player player;
-    enum MenuAction { Play = 0, Menu = 1, Quit = 2 }
-    [SerializeField] GameObject menu, loadingMenu;
+    public static GameManager Instance;
+    [field: SerializeField] public Player player { get; private set; }
+    [SerializeField] SpriteAtlas spriteAtlas;
+
+    // Canvas
     [SerializeField] Image loadingBar;
+    [SerializeField] GameObject menu, loadingMenu;
     [SerializeField] TextMeshProUGUI loadingText, coinText, scoreText, deathText, fpsText;
     [SerializeField] SpriteRenderer background;
     [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip newHighScoreSound, uiSelectSound;
+    [SerializeField] AudioClip uiSelectSound;
     int currentScore, coinsCollectedThisRound;
+    enum MenuAction { Play = 0, Menu = 1, Quit = 2 }
 
-    [Tab("ObjectsToPool")]
+    // Objects to pool
     [SerializeField] Movable[] birdsToPool, obstaclesToPool, coinsToPool;
 
-    [Tab("DayNightCycle")]
+    // DayNightCycle
     [SerializeField] Transform sunMoonIcon;
     [SerializeField] TextMeshProUGUI timerText;
     int minutes = 0, hours = 12;
 
-    [Tab("LoadAndSave")]
-    public int gameSpeed { get; private set; } // Public getter for Bird class to access
-    int highScore, coin, totalDeaths, skill1GreedLevel;
+    // Load and save
+    int gameSpeed, highScore, coin, totalDeaths, skill1GreedLevel;
     bool showFpsOption, spawnBirdsOption;
+
+    Coroutine flapRespawnCoroutine;
+
+    public int GetGameSpeed() => gameSpeed;
+    public SpriteAtlas GetSpriteAtlas() => spriteAtlas;
+
+    void Awake() => Instance = this;
 
     void Start()
     {
@@ -46,7 +58,7 @@ public sealed partial class GameManager : MonoBehaviour
     // Start all InvokeRepeating gameplay loops
     void StartGameplayLoops()
     {
-        if (spawnBirdsOption) InvokeRepeating(nameof(BirdsPool), BirdsSpawnDelay, BirdsSpawnDelay);
+        if (spawnBirdsOption) InvokeRepeating(nameof(BirdsPool), BirdSpawnDelay, BirdSpawnDelay);
         float obstaclesAndCoinsSpawnDelay = gameSpeed == 0 ? SlowObstaclesAndCoinsSpawnDelay : gameSpeed == 1 ? MediumObstaclesAndCoinsSpawnDelay : FastObstaclesAndCoinsSpawnDelay;
         InvokeRepeating(nameof(ObstaclesAndCoinsPool), obstaclesAndCoinsSpawnDelay, obstaclesAndCoinsSpawnDelay);
         InvokeRepeating(nameof(DayNightCycle), DayNightCycleInterval, DayNightCycleInterval); // Affects background color, sun/moon icon rotation and timer
@@ -64,12 +76,12 @@ public sealed partial class GameManager : MonoBehaviour
 
     void UpdateFpsHud() => fpsText.text = "Fps: " + Mathf.RoundToInt(1 / Time.deltaTime).ToString();
 
-    void BirdsPool() { if (PercentChance(BirdSpawnChance)) PoolObject(birdsToPool); }
+    void BirdsPool() { if (PercentChance(BirdSpawnChance)) PoolComponent(birdsToPool)?.Activate(); }
 
     void ObstaclesAndCoinsPool()
     {
-        PoolObject(obstaclesToPool);
-        PoolObject(coinsToPool);
+        PoolComponent(obstaclesToPool)?.Activate();
+        PoolComponent(coinsToPool)?.Activate();
     }
 
     // Update clock, background color, and sun/moon rotation based on time of day
@@ -122,7 +134,7 @@ public sealed partial class GameManager : MonoBehaviour
         UpdateScore();
     }
 
-    // Stops Coins and Obstacles movement, cancels spawns, and updates death stats (called on Player death)
+    // Stops coin and obstacle movement, cancels spawns, and updates death stats (called on Player death)
     void StopAllObjects()
     {
         foreach (Movable coin in coinsToPool) coin.Stop();
@@ -134,7 +146,18 @@ public sealed partial class GameManager : MonoBehaviour
         totalDeaths += 1;
         deathText.text = $"Total Deaths: {totalDeaths}\nHighest Score: {highScore}\nCoins Collected This Round: {coinsCollectedThisRound}";
         coinsCollectedThisRound = 0;
-        this.Wait(0.5f, () => menu.SetActive(true));
+        this.Wait(0.5f, () =>
+        {
+            menu.SetActive(true);
+            flapRespawnCoroutine = StartCoroutine(FlapRespawnRoutine());
+        });
+    }
+
+    // Waits for flap input after death, then restarts the game
+    IEnumerator FlapRespawnRoutine()
+    {
+        yield return new WaitUntil(() => Input.GetKeyDown(player.flapKey));
+        MenuSelection((int)MenuAction.Play);
     }
 
     // Disables all pooled objects, restarts gameplay loops, resets score and updates UI (called on Player respawn)
@@ -158,6 +181,7 @@ public sealed partial class GameManager : MonoBehaviour
         switch ((MenuAction)index)
         {
             case MenuAction.Play:
+                if (flapRespawnCoroutine != null) StopCoroutine(flapRespawnCoroutine);
                 player.Respawn();
                 menu.SetActive(false);
                 break;
@@ -178,17 +202,18 @@ public sealed partial class GameManager : MonoBehaviour
     #region Load & Save
     void LoadStats()
     {
-        // Load high score and total deaths, update UI
+        // Load high score and total deaths
         highScore = PlayerPrefs.GetInt("HighestScore", 100);
         scoreText.text = currentScore + " / " + highScore;
         totalDeaths = PlayerPrefs.GetInt("TotalDeaths");
 
-        // Load coins and skill level, update UI
+        // Load coins, skill level, background
         coin = PlayerPrefs.GetInt("Coin");
         coinText.text = coin.ToString();
         skill1GreedLevel = PlayerPrefs.GetInt("Skill1GreedLevel");
+        background.sprite = spriteAtlas.GetSprite("Background" + PlayerPrefs.GetInt("BackgroundSelected", 0));
 
-        // Load general settings (volume, game speed, fps-showing option, bird-spawning option)
+        // Load general settings (volume, game speed, fps-showing, bird-spawning)
         AudioListener.volume = PlayerPrefs.GetFloat("GlobalVolume", 1);
         gameSpeed = PlayerPrefs.GetInt("Game Speed");
         showFpsOption = PlayerPrefs.GetInt("ShowFps") == 1;

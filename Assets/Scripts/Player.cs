@@ -7,7 +7,7 @@ public sealed class Player : MonoBehaviour
 {
     public event System.Action OnCoinTake, OnDeath, OnRespawn;
 
-    [SerializeField] KeyCode flapKey;
+    [field: SerializeField] public KeyCode flapKey { get; private set; }
     [SerializeField] Image skill2;
     [SerializeField] RuntimeAnimatorController[] animatorControllers;
     [SerializeField] Animator animator, skill1Animator, skill2Animator;
@@ -18,7 +18,8 @@ public sealed class Player : MonoBehaviour
     [SerializeField] Whoosh[] whooshVFXPool;
     float jumpForce = PlayerJumpForce;
     float skill2ShieldLevel, skill2Timer, skill2Cooldown;
-    bool isAlive = true, isInvulnerable = false;
+    public bool isAlive { get; private set; } = true;
+    bool isInvulnerable = false;
 
     // Load bird skin, skill cooldown, and flap key from PlayerPrefs on startup
     void Awake()
@@ -42,7 +43,7 @@ public sealed class Player : MonoBehaviour
     {
         rb.linearVelocityY -= PlayerGravity * Time.deltaTime; // Gravity
 
-        if (Input.GetKeyDown(flapKey) || Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+        if (Input.GetKeyDown(flapKey) || Input.GetMouseButtonDown(0))
         {
             audioSource.PlayOneShot(sounds[0]);
             rb.linearVelocity = Vector2.zero; // Reset vertical velocity before applying the flap force
@@ -87,7 +88,7 @@ public sealed class Player : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (!isAlive) return;
-        if (other.gameObject.CompareTag("Enemy") && !isInvulnerable) Death();
+        if (other.gameObject.CompareTag("Obstacle") && !isInvulnerable) this.Wait(0.03f, () => Death());
         else if (other.gameObject.CompareTag("Coin")) TakeCoin(other.gameObject);
     }
 

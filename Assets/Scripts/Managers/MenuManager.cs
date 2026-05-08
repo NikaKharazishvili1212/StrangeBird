@@ -8,12 +8,13 @@ using static Utils;
 public sealed partial class MenuManager : MonoBehaviour
 {
     [Tab("Main Menu")]
-    enum MenuType : byte { Play = 0, Shop = 1, Options = 2, Quit = 3, BackToMain = 4, BackToShop = 5 }
     [SerializeField] GameObject menu, loadingMenu, shopMenu, optionMenu;
     [SerializeField] Image loadingBar, background;
     [SerializeField] TextMeshProUGUI loadingText;
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip cantDoThatSound;
+    
+    enum MenuType : byte { Play = 0, Shop = 1, Options = 2, Quit = 3, BackToMain = 4, BackToShop = 5 }
 
     void Awake() => LoadStats();
     void OnApplicationQuit() => SaveStats();
@@ -56,7 +57,9 @@ public sealed partial class MenuManager : MonoBehaviour
         menu.SetActive(true);
         shopMenu.SetActive(false);
         optionMenu.SetActive(false);
-        StopCoroutine(nameof(DetectFlapKey)); // Stop key detection and restore the formatted key name in case player exits without choosing
+        // Stop key detection and restore the formatted key name in case player exits without choosing
+        StopCoroutine(nameof(DetectFlapKey));
+        flapKeyText.text = flapKey.ToString().Replace("Alpha", "A").Replace("Keypad", "K").Replace("Left", "L").Replace("Right", "R").Replace("Back", "B");
     }
 
     // Back to shop menu from birds/backgrounds/obstacles/skills shop

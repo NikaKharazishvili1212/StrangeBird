@@ -58,6 +58,8 @@ SpriteAtlas:
     - 46b08b0103b68da459e13bbae5117a05: -4178046375966092550
     - 7cc9be0152533414388436a34a005a42: 21300000
     - 7aacad2106cbaf04f814fe0170b85a7e: 21300000
+    - 947670e17387b7149b9c1c8af75a5b61: 21300000
+    - 2ebd1914e883479478c9fb6929b7e8a9: 21300000
     - 0fedcc1458f4e7c428c12a7d2a1bc870: 21300000
     - 9b92ad06535074245a1832d7985ec7d9: 21300000
     - cab8cc86f708fa04389fd47fee28d66c: 21300000
@@ -80,8 +82,8 @@ SpriteAtlas:
     - 135a12abc6aead84b95993e9c0b4466c: 21300000
     - b41d04cb0521a474d9ed1161556570c0: -6470460504253458178
     - d33b36fb58fc3fd4996bdf293e7f367f: 21300000
+    - 4594cd5cfae020548929e669d1bc185e: 21300000
     - 9c588f5ce2b1fe942a179fc01ddbf6f5: 21300000
-    - d18d747c529ed5448ac1a93deb98098c: 21300000
     - ed356eec752c06d499ab8f57848f10ac: 21300000
     - 1f773c2d2cf71614b9b4b25c68153623: 21300000
     - 0d9bb05d8336b9a429dc599212636fba: 21300000
@@ -102,6 +104,8 @@ SpriteAtlas:
   - {fileID: -4178046375966092550, guid: 46b08b0103b68da459e13bbae5117a05, type: 3}
   - {fileID: 21300000, guid: 7cc9be0152533414388436a34a005a42, type: 3}
   - {fileID: 21300000, guid: 7aacad2106cbaf04f814fe0170b85a7e, type: 3}
+  - {fileID: 21300000, guid: 947670e17387b7149b9c1c8af75a5b61, type: 3}
+  - {fileID: 21300000, guid: 2ebd1914e883479478c9fb6929b7e8a9, type: 3}
   - {fileID: 21300000, guid: 0fedcc1458f4e7c428c12a7d2a1bc870, type: 3}
   - {fileID: 21300000, guid: 9b92ad06535074245a1832d7985ec7d9, type: 3}
   - {fileID: 21300000, guid: cab8cc86f708fa04389fd47fee28d66c, type: 3}
@@ -124,8 +128,8 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 135a12abc6aead84b95993e9c0b4466c, type: 3}
   - {fileID: -6470460504253458178, guid: b41d04cb0521a474d9ed1161556570c0, type: 3}
   - {fileID: 21300000, guid: d33b36fb58fc3fd4996bdf293e7f367f, type: 3}
+  - {fileID: 21300000, guid: 4594cd5cfae020548929e669d1bc185e, type: 3}
   - {fileID: 21300000, guid: 9c588f5ce2b1fe942a179fc01ddbf6f5, type: 3}
-  - {fileID: 21300000, guid: d18d747c529ed5448ac1a93deb98098c, type: 3}
   - {fileID: 21300000, guid: ed356eec752c06d499ab8f57848f10ac, type: 3}
   - {fileID: 21300000, guid: 1f773c2d2cf71614b9b4b25c68153623, type: 3}
   - {fileID: 21300000, guid: 0d9bb05d8336b9a429dc599212636fba, type: 3}
@@ -145,6 +149,8 @@ SpriteAtlas:
   - Whoosh_4
   - Skill2
   - Coin(4)
+  - CursorHand
+  - Chat
   - Background7
   - Bird0
   - Button
@@ -167,8 +173,8 @@ SpriteAtlas:
   - Obstacle1
   - Whoosh_3
   - Bird7
+  - CursorArrow
   - Checkmark_Disabled
-  - Chat
   - Coin(2)
   - Background4
   - Coin(5)
