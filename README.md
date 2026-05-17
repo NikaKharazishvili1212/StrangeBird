@@ -18,3 +18,7 @@ This repository is for viewing purposes only. All content, including third-party
 
 ## Watch the Demo on YouTube
 [![Watch the demo](https://img.youtube.com/vi/ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=ID)
+
+<div align="center">
+  <a href="https://nikson212.itch.io/strangebird">Download on itch.io</a>
+</div>
