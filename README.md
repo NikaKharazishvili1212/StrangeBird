@@ -17,7 +17,7 @@ showcasing clean, performant, and modular code.
 This repository is for viewing purposes only. All content, including third-party assets, may not be reused, copied, or redistributed without explicit permission.
 
 ## Watch the Demo on YouTube
-[![Watch the demo](https://img.youtube.com/vi/ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=ID)
+[![Watch the demo](https://img.youtube.com/vi/JAEvVGqfEaY/maxresdefault.jpg)](https://www.youtube.com/watch?v=JAEvVGqfEaY)
 
 <div align="center">
   <a href="https://nikson212.itch.io/strangebird">Download on itch.io</a>
